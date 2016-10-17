@@ -249,6 +249,9 @@ if [ "$SCRIPT_BEFORE_MIGRATION" != "" ]; then
   popd
 fi
 
+#add necessary path to find git-http-backend
+sudo -u "$PHABRICATOR_VCS_USER" ./bin/config set environment.append-paths '["/bin","/usr/bin","/usr/local/bin","/usr/lib/git"]'
+
 # The search database may need to be repaired, and if so, will prevent bin/storage upgrade from working
 # so preemptively run a repair on that database now.
 mysqlcheck --host="$MYSQL_HOST" --port="$MYSQL_PORT" --user="$MYSQL_USER" --password="$MYSQL_PASS" --databases "${MYSQL_STORAGE_NAMESPACE}_search" || true
